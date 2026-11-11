@@ -18,7 +18,7 @@ class SetupTests(unittest.TestCase):
     def setUp(self):
         self.temp = tempfile.TemporaryDirectory(prefix='advisor space ü ')
         self.addCleanup(self.temp.cleanup)
-        self.home = Path(self.temp.name)
+        self.home = Path(self.temp.name).resolve()
 
     def run_setup(self, *args):
         return s.main(['--codex-home', str(self.home), *args])
