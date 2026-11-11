@@ -34,6 +34,40 @@ Die Einrichtung setzt globale Standards für **neue Sitzungen**, installiert den
 eine neutrale Beraterrolle und globale Automatik-Anweisungen. Laufende Chats werden nicht
 umgeschaltet. Projekt-, Profil- und Sitzungsvorgaben können die globalen Standards übersteuern.
 
+## Nutzungsstatistik
+
+Im Chat beispielsweise: „Zeige meine Advisor-Statistik der letzten sieben Tage.“ Im Terminal:
+
+```sh
+python scripts/stats.py
+python scripts/stats.py --group-by model
+python scripts/stats.py --since 2026-11-01 --until 2026-11-30 --group-by day
+python scripts/stats.py --chat THREAD-ID --json
+```
+
+Standardmäßig werden alle lokal erfassten bestätigten Beratungen ausgewertet. Filter:
+`--since`, `--until`, `--chat`, `--model`; Gruppierung: `day`, `chat`, `model`.
+Die Datumsgrenzen schließen den ganzen jeweiligen lokalen Kalendertag ein. Sprache wird aus der
+Installation übernommen oder mit `--language de|en` gewählt. `--codex-home PFAD` ist möglich.
+Der Statistikbefehl benötigt nur Python 3.11+, keine zusätzlichen Pakete oder Netzwerkverbindung.
+
+Die Übersicht unterscheidet Berater-Threads und gestartete Beratungsrunden einschließlich
+Folgefragen. Sie zeigt laufende Runden sowie Eingabe-, Cache-, Ausgabe-, Gesamt- und Reasoning-Tokens.
+Tokens werden ihrem Nutzungszeitpunkt zugeordnet, Runden ihrem Start. Eine Runde über Mitternacht
+kann am Folgetag Tokens ohne neu gestartete Runde erzeugen. Bei Modellwechsel kann dieselbe Runde
+in mehreren Modellgruppen erscheinen; die Gesamtanzahl bleibt eindeutig gezählt.
+
+Bekannte Beraterrollen und der eigene Taskname `codex_advisor_*` werden bestätigt zugeordnet.
+Andere historische Kandidaten erscheinen separat und zählen nicht in die bestätigte Summe.
+Ein Astra-Modell allein beweist keine Beratung. Aktive und archivierte Protokolle werden lesend
+ausgewertet; doppelte Historien und kumulierte Zähler nicht mehrfach addiert. Fehlende Anfangswerte,
+zurückgesetzte Zähler und beschädigte Daten führen zu einem Hinweis auf unvollständige Erfassung.
+Unbekannte Tokens sind `?` beziehungsweise JSON `null`, niemals null Tokens.
+
+Cache- und Reasoning-Tokens sind Teilmengen. Es werden keine Euro-Kosten oder Abo-Prozente geschätzt.
+Keine Chat-Inhalte werden exportiert, keine Quelldaten verändert und keine Hintergrunddatenbank
+angelegt. Nur auf Wunsch per `--json > bericht.json` exportieren. Start-/Endmeldungen bleiben kurz.
+
 ## Einstellungen und Updates
 
 ```sh

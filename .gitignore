@@ -6,3 +6,4 @@ settings.json
 backups/
 pending.json
 *.log
+stats-*.json

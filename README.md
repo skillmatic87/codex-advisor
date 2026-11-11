@@ -66,6 +66,36 @@ take external actions or spawn agents. Main-agent commentary reports activation 
 (including errors/cancellations), using the actual advisor name. Native model/effort selection
 is required; unavailable delegation is reported rather than replaced by an API/CLI workaround.
 
+## Usage statistics
+
+Ask Codex: "Show my advisor statistics for the last seven days" or run:
+
+```sh
+python scripts/stats.py
+python scripts/stats.py --group-by model
+python scripts/stats.py --since 2026-11-01 --until 2026-11-30 --group-by day
+python scripts/stats.py --chat THREAD-ID --json
+```
+
+The default is all locally recorded confirmed advisor usage. Filters include `--since`, `--until`,
+`--chat`, `--model`; grouping is `day`, `chat` or `model`. Both dates include the whole local calendar
+day. Language comes from installed settings or `--language en|de`. `--codex-home PATH` is supported.
+Statistics require only Python 3.11+; no third-party packages, setup or network access are needed.
+
+The report shows advisor threads, recorded started rounds (including follow-ups), running rounds,
+input/cached/output/total tokens and reasoning detail. Tokens follow the date of the usage event;
+rounds follow their start date. Cache and reasoning are subsets, not extra tokens. Model groups
+can share a round when its model changed. The global round count is deduplicated.
+
+Only known advisor roles and reserved own task names `codex_advisor_*` are confirmed. Other
+historical advisor-like names are shown separately and excluded; model identity alone is not
+proof. Local logs from `sessions` and `archived_sessions` are read linewise and deduplicated.
+Cumulative counters are differenced; unknown baselines, resets and missing/corrupt records are
+flagged. Partial results are **observed usage**, not a complete total; unknown is `?` / JSON null,
+not zero. No logs are modified, no prompts are exported, and no background database is created.
+Use `--json > report.json` for an explicit export. These are local token counters, not account
+billing or plan-percentage measurements. Routine advisor notifications stay unchanged.
+
 ## Update, reconfigure, recover
 
 ```sh
