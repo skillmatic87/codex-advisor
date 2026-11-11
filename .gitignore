@@ -1,0 +1,8 @@
+__pycache__/
+*.pyc
+.venv/
+.deps/
+settings.json
+backups/
+pending.json
+*.log
